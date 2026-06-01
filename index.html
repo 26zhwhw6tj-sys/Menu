@@ -1,0 +1,426 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Menú Semanal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        :root {
+            --primary: #ffffff;
+            --secondary: #f0f0f0;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --gray: #6c757d;
+            --border: rgba(255, 255, 255, 0.2);
+            --transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe0cd, #ffc2a1, #ffbe97);
+            background-size: 300% 300%;
+            animation: gradientAnimation 15s ease infinite;
+            min-height: 100vh;
+            padding: 0;
+            overflow: hidden;
+            color: var(--dark);
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .app-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: transparent;
+        }
+
+        .app-header {
+            background: #000000;
+            color: white;
+            padding: 20px 15px 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .day-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+            padding: 15px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .day-content {
+            display: none;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: var(--transition);
+            padding-bottom: 30px;
+        }
+
+        .day-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 2;
+        }
+
+        .day-content.prev {
+            transform: translateX(-100%);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .day-content.next {
+            transform: translateX(100%);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .meal-section {
+            margin-bottom: 20px;
+            animation: slideInUp 0.7s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .meal-section:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .meal-section:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .meal-section:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .meal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #000000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meal-input {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            resize: none;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            line-height: 1.5;
+        }
+
+        .meal-input:focus {
+            outline: none;
+            border-color: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .day-name {
+                font-size: 1.6rem;
+            }
+            
+            .meal-title {
+                font-size: 1.1rem;
+            }
+            
+            .meal-input {
+                min-height: 90px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="day-name" id="currentDay">Lunes</div>
+        </header>
+        
+        <main class="main-content">
+            <div class="day-content active" id="lunes-content">
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                    <textarea class="meal-input autosize" id="lunes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                    <textarea class="meal-input autosize" id="lunes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                    <textarea class="meal-input autosize" id="lunes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+            </div>
+
+            <div class="day-content" id="martes-content">
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                    <textarea class="meal-input autosize" id="martes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                    <textarea class="meal-input autosize" id="martes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                    <textarea class="meal-input autosize" id="martes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+            </div>
+
+            <div class="day-content" id="miercoles-content">
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                    <textarea class="meal-input autosize" id="miercoles-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                    <textarea class="meal-input autosize" id="miercoles-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                    <textarea class="meal-input autosize" id="miercoles-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+            </div>
+
+            <div class="day-content" id="jueves-content">
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                    <textarea class="meal-input autosize" id="jueves-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                    <textarea class="meal-input autosize" id="jueves-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                    <textarea class="meal-input autosize" id="jueves-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+            </div>
+
+            <div class="day-content" id="viernes-content">
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                    <textarea class="meal-input autosize" id="viernes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                    <textarea class="meal-input autosize" id="viernes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                    <textarea class="meal-input autosize" id="viernes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+            </div>
+
+            <div class="day-content" id="sabado-content">
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                    <textarea class="meal-input autosize" id="sabado-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                    <textarea class="meal-input autosize" id="sabado-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                    <textarea class="meal-input autosize" id="sabado-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+            </div>
+
+            <div class="day-content" id="domingo-content">
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                    <textarea class="meal-input autosize" id="domingo-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                    <textarea class="meal-input autosize" id="domingo-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+                <div class="meal-section">
+                    <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                    <textarea class="meal-input autosize" id="domingo-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dayContents = document.querySelectorAll('.day-content');
+            const textareas = document.querySelectorAll('.autosize');
+            const currentDayElement = document.getElementById('currentDay');
+            const mainContent = document.querySelector('.main-content');
+            
+            const days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+            const dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+            let currentDayIndex = 0;
+            
+            loadMenu();
+            
+            let touchStartX = 0;
+            let touchEndX = 0;
+            let touchStartY = 0;
+            let touchEndY = 0;
+            
+            mainContent.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            }, false);
+            
+            mainContent.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                touchEndY = e.changedTouches[0].screenY;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const verticalThreshold = 30;
+                
+                const horizontalDistance = Math.abs(touchStartX - touchEndX);
+                const verticalDistance = Math.abs(touchStartY - touchEndY);
+                
+                if (horizontalDistance > verticalDistance && horizontalDistance > swipeThreshold) {
+                    if (touchStartX - touchEndX > swipeThreshold) {
+                        nextDay();
+                    } else if (touchEndX - touchStartX > swipeThreshold) {
+                        prevDay();
+                    }
+                }
+            }
+            
+            function nextDay() {
+                const nextIndex = (currentDayIndex + 1) % days.length;
+                switchDay(nextIndex);
+            }
+            
+            function prevDay() {
+                const prevIndex = (currentDayIndex - 1 + days.length) % days.length;
+                switchDay(prevIndex);
+            }
+            
+            function switchDay(newIndex) {
+                const direction = newIndex > currentDayIndex ? 'next' : 'prev';
+                
+                dayContents[currentDayIndex].classList.remove('active');
+                dayContents[currentDayIndex].classList.add(direction);
+                
+                dayContents[newIndex].classList.remove('prev', 'next');
+                dayContents[newIndex].classList.add('active');
+                
+                currentDayElement.textContent = dayNames[newIndex];
+                
+                mainContent.scrollTop = 0;
+                
+                setTimeout(adjustTextareaHeights, 100);
+                
+                currentDayIndex = newIndex;
+            }
+            
+            function adjustTextareaHeights() {
+                textareas.forEach(textarea => {
+                    textarea.style.height = 'auto';
+                    textarea.style.height = (textarea.scrollHeight) + 'px';
+                });
+            }
+            
+            function saveMenu() {
+                const menu = {};
+                days.forEach(day => {
+                    menu[day] = {
+                        desayuno: document.getElementById(`${day}-desayuno`).value,
+                        almuerzo: document.getElementById(`${day}-almuerzo`).value,
+                        cena: document.getElementById(`${day}-cena`).value
+                    };
+                });
+                localStorage.setItem('menuSemanal', JSON.stringify(menu));
+            }
+            
+            function loadMenu() {
+                const savedMenu = localStorage.getItem('menuSemanal');
+                if (savedMenu) {
+                    const menu = JSON.parse(savedMenu);
+                    days.forEach(day => {
+                        if (menu[day]) {
+                            document.getElementById(`${day}-desayuno`).value = menu[day].desayuno || '';
+                            document.getElementById(`${day}-almuerzo`).value = menu[day].almuerzo || '';
+                            document.getElementById(`${day}-cena`).value = menu[day].cena || '';
+                        }
+                    });
+                    
+                    setTimeout(adjustTextareaHeights, 100);
+                }
+            }
+            
+            textareas.forEach(textarea => {
+                textarea.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = (this.scrollHeight) + 'px';
+                    
+                    clearTimeout(this.saveTimeout);
+                    this.saveTimeout = setTimeout(saveMenu, 1000);
+                });
+                
+                textarea.style.height = 'auto';
+                textarea.style.height = (textarea.scrollHeight) + 'px';
+            });
+        });
+    </script>
+</body>
+</html>
+```
