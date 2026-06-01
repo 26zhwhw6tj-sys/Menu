@@ -123,6 +123,12 @@
             position: relative;
             padding: 15px;
             -webkit-overflow-scrolling: touch;
+            cursor: grab;
+        }
+
+        .main-content.dragging {
+            cursor: grabbing;
+            user-select: none;
         }
 
         .day-content {
@@ -242,7 +248,7 @@
             <div class="day-name" id="currentDay">Lunes</div>
         </header>
         
-        <main class="main-content">
+        <main class="main-content" id="mainContent">
             <div class="day-content active" id="lunes-content">
                 <div class="meal-section">
                     <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
@@ -416,7 +422,7 @@
             const dayContents = document.querySelectorAll('.day-content');
             const textareas = document.querySelectorAll('.autosize');
             const currentDayElement = document.getElementById('currentDay');
-            const mainContent = document.querySelector('.main-content');
+            const mainContent = document.getElementById('mainContent');
             
             const days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
             const dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
@@ -424,21 +430,79 @@
             
             loadMenu();
             
+            // Variables para swipe táctil
             let touchStartX = 0;
             let touchEndX = 0;
             let touchStartY = 0;
             let touchEndY = 0;
             
-            mainContent.addEventListener('touchstart', e => {
-                touchStartX = e.changedTouches[0].screenX;
-                touchStartY = e.changedTouches[0].screenY;
-            }, false);
+            // Variables para arrastre con ratón
+            let isDragging = false;
+            let dragStartX = 0;
+            let dragOffset = 0;
+            let dragDirection = 0;
             
-            mainContent.addEventListener('touchend', e => {
-                touchEndX = e.changedTouches[0].screenX;
-                touchEndY = e.changedTouches[0].screenY;
-                handleSwipe();
-            }, false);
+            // Detectar si es dispositivo táctil
+            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            
+            // Eventos táctiles
+            if (isTouchDevice) {
+                mainContent.addEventListener('touchstart', e => {
+                    touchStartX = e.changedTouches[0].screenX;
+                    touchStartY = e.changedTouches[0].screenY;
+                }, false);
+                
+                mainContent.addEventListener('touchend', e => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    touchEndY = e.changedTouches[0].screenY;
+                    handleSwipe();
+                }, false);
+            }
+            
+            // Eventos de ratón para PC
+            mainContent.addEventListener('mousedown', e => {
+                if (!isTouchDevice) {
+                    isDragging = true;
+                    dragStartX = e.clientX;
+                    mainContent.classList.add('dragging');
+                    e.preventDefault();
+                }
+            });
+            
+            document.addEventListener('mousemove', e => {
+                if (isDragging && !isTouchDevice) {
+                    dragOffset = e.clientX - dragStartX;
+                    dragDirection = dragOffset > 0 ? 1 : -1;
+                    
+                    // Aplicar transformación visual durante el arrastre
+                    const activeContent = dayContents[currentDayIndex];
+                    activeContent.style.transform = `translateX(${dragOffset}px)`;
+                    activeContent.style.opacity = 1 - Math.abs(dragOffset) / 300;
+                }
+            });
+            
+            document.addEventListener('mouseup', e => {
+                if (isDragging && !isTouchDevice) {
+                    isDragging = false;
+                    mainContent.classList.remove('dragging');
+                    
+                    // Determinar si el desplazamiento fue suficiente para cambiar de día
+                    if (Math.abs(dragOffset) > 100) {
+                        if (dragOffset > 0) {
+                            prevDay();
+                        } else {
+                            nextDay();
+                        }
+                    } else {
+                        // Revertir animación si no se alcanzó el umbral
+                        const activeContent = dayContents[currentDayIndex];
+                        activeContent.style.transform = '';
+                        activeContent.style.opacity = '';
+                    }
+                    
+                    dragOffset = 0;
+                }
+            });
             
             function handleSwipe() {
                 const swipeThreshold = 50;
