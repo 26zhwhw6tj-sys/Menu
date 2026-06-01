@@ -43,12 +43,58 @@
             100% { background-position: 0% 50%; }
         }
 
+        .launcher {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .launcher.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: white;
+            border-radius: 2px;
+            transition: width 0.1s linear;
+        }
+
         .app-container {
             width: 100%;
             height: 100vh;
             display: flex;
             flex-direction: column;
             background: transparent;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .app-container.visible {
+            opacity: 1;
         }
 
         .app-header {
@@ -185,7 +231,13 @@
     </style>
 </head>
 <body>
-    <div class="app-container">
+    <div class="launcher" id="launcher">
+        <div class="loading-bar">
+            <div class="loading-progress" id="loading-progress"></div>
+        </div>
+    </div>
+
+    <div class="app-container" id="app-container">
         <header class="app-header">
             <div class="day-name" id="currentDay">Lunes</div>
         </header>
@@ -300,6 +352,67 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const launcher = document.getElementById('launcher');
+            const loadingProgress = document.getElementById('loading-progress');
+            const appContainer = document.getElementById('app-container');
+            
+            let progress = 0;
+            let stallPoints = [];
+            let speeds = [];
+            
+            for(let i = 0; i < 360; i++) {
+                speeds.push(Math.random() * 10 + 1);
+            }
+            
+            const stallCount = Math.floor(Math.random() * 5) + 3;
+            for(let i = 0; i < stallCount; i++) {
+                stallPoints.push(Math.random() * 90);
+            }
+            
+            let speedIndex = 0;
+            
+            function updateProgress() {
+                let isStalling = false;
+                for(let i = 0; i < stallPoints.length; i++) {
+                    if (stallPoints[i] > 0 && Math.abs(progress - stallPoints[i]) < 1) {
+                        stallPoints[i] = -stallPoints[i];
+                        isStalling = true;
+                        const stallDuration = Math.random() * 800 + 200;
+                        
+                        setTimeout(() => {
+                            updateProgress();
+                        }, stallDuration);
+                        
+                        return;
+                    }
+                }
+                
+                const currentSpeed = speeds[speedIndex] || (Math.random() * 3 + 0.5);
+                speedIndex = (speedIndex + 1) % speeds.length;
+                
+                progress += currentSpeed * 0.3;
+                
+                if (progress >= 100) {
+                    progress = 100;
+                    loadingProgress.style.width = '100%';
+                    
+                    setTimeout(() => {
+                        launcher.classList.add('hidden');
+                        appContainer.classList.add('visible');
+                        initApp();
+                    }, 300);
+                    
+                    return;
+                }
+                
+                loadingProgress.style.width = `${progress}%`;
+                requestAnimationFrame(updateProgress);
+            }
+            
+            requestAnimationFrame(updateProgress);
+        });
+
+        function initApp() {
             const dayContents = document.querySelectorAll('.day-content');
             const textareas = document.querySelectorAll('.autosize');
             const currentDayElement = document.getElementById('currentDay');
@@ -418,7 +531,7 @@
                 textarea.style.height = 'auto';
                 textarea.style.height = (textarea.scrollHeight) + 'px';
             });
-        });
+        }
     </script>
 </body>
 </html>
