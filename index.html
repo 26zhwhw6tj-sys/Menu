@@ -1,3 +1,5 @@
+CODIGO ORIGINAL MENU
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -123,12 +125,6 @@
             position: relative;
             padding: 15px;
             -webkit-overflow-scrolling: touch;
-            cursor: grab;
-        }
-
-        .main-content.dragging {
-            cursor: grabbing;
-            user-select: none;
         }
 
         .day-content {
@@ -137,8 +133,6 @@
             transform: translateX(50px);
             transition: var(--transition);
             padding-bottom: 30px;
-            position: absolute;
-            width: calc(100% - 30px);
         }
 
         .day-content.active {
@@ -146,7 +140,6 @@
             opacity: 1;
             transform: translateX(0);
             z-index: 2;
-            position: relative;
         }
 
         .day-content.prev {
@@ -159,11 +152,6 @@
             transform: translateX(100%);
             opacity: 0;
             z-index: 1;
-        }
-
-        .day-content.dragging {
-            transition: none;
-            z-index: 3;
         }
 
         .meal-section {
@@ -256,7 +244,7 @@
             <div class="day-name" id="currentDay">Lunes</div>
         </header>
         
-        <main class="main-content" id="mainContent">
+        <main class="main-content">
             <div class="day-content active" id="lunes-content">
                 <div class="meal-section">
                     <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
@@ -430,7 +418,7 @@
             const dayContents = document.querySelectorAll('.day-content');
             const textareas = document.querySelectorAll('.autosize');
             const currentDayElement = document.getElementById('currentDay');
-            const mainContent = document.getElementById('mainContent');
+            const mainContent = document.querySelector('.main-content');
             
             const days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
             const dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
@@ -438,82 +426,21 @@
             
             loadMenu();
             
-            // Variables para swipe táctil
             let touchStartX = 0;
             let touchEndX = 0;
             let touchStartY = 0;
             let touchEndY = 0;
             
-            // Variables para arrastre con ratón
-            let isDragging = false;
-            let dragStartX = 0;
-            let dragOffset = 0;
-            let activeContent = null;
-            let isAnimating = false; // Para prevenir cambios rápidos
+            mainContent.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            }, false);
             
-            // Detectar si es dispositivo táctil
-            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-            
-            // Eventos táctiles
-            if (isTouchDevice) {
-                mainContent.addEventListener('touchstart', e => {
-                    if (isAnimating) return;
-                    touchStartX = e.changedTouches[0].screenX;
-                    touchStartY = e.changedTouches[0].screenY;
-                }, false);
-                
-                mainContent.addEventListener('touchend', e => {
-                    if (isAnimating) return;
-                    touchEndX = e.changedTouches[0].screenX;
-                    touchEndY = e.changedTouches[0].screenY;
-                    handleSwipe();
-                }, false);
-            }
-            
-            // Eventos de ratón para PC
-            mainContent.addEventListener('mousedown', e => {
-                if (isTouchDevice || isAnimating) return;
-                isDragging = true;
-                dragStartX = e.clientX;
-                activeContent = dayContents[currentDayIndex];
-                activeContent.classList.add('dragging');
-                mainContent.classList.add('dragging');
-                e.preventDefault();
-            });
-            
-            document.addEventListener('mousemove', e => {
-                if (!isDragging || isTouchDevice || isAnimating || !activeContent) return;
-                
-                dragOffset = e.clientX - dragStartX;
-                
-                // Aplicar transformación visual durante el arrastre
-                activeContent.style.transform = `translateX(${dragOffset}px)`;
-                activeContent.style.opacity = 1 - Math.abs(dragOffset) / 300;
-            });
-            
-            document.addEventListener('mouseup', e => {
-                if (!isDragging || isTouchDevice || isAnimating || !activeContent) return;
-                
-                isDragging = false;
-                mainContent.classList.remove('dragging');
-                
-                // Determinar si el desplazamiento fue suficiente para cambiar de día
-                if (Math.abs(dragOffset) > 100) {
-                    if (dragOffset > 0) {
-                        prevDay();
-                    } else {
-                        nextDay();
-                    }
-                } else {
-                    // Revertir animación si no se alcanzó el umbral
-                    activeContent.style.transform = '';
-                    activeContent.style.opacity = '';
-                    activeContent.classList.remove('dragging');
-                }
-                
-                dragOffset = 0;
-                activeContent = null;
-            });
+            mainContent.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                touchEndY = e.changedTouches[0].screenY;
+                handleSwipe();
+            }, false);
             
             function handleSwipe() {
                 const swipeThreshold = 50;
@@ -532,29 +459,13 @@
             }
             
             function nextDay() {
-                if (isAnimating) return;
-                isAnimating = true;
-                
                 const nextIndex = (currentDayIndex + 1) % days.length;
                 switchDay(nextIndex);
-                
-                // Resetear animación después de completar la transición
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 600); // Coincide con la duración de la transición CSS
             }
             
             function prevDay() {
-                if (isAnimating) return;
-                isAnimating = true;
-                
                 const prevIndex = (currentDayIndex - 1 + days.length) % days.length;
                 switchDay(prevIndex);
-                
-                // Resetear animación después de completar la transición
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 600); // Coincide con la duración de la transición CSS
             }
             
             function switchDay(newIndex) {
