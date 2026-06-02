@@ -448,8 +448,8 @@
             let isDragging = false;
             let dragStartX = 0;
             let dragOffset = 0;
-            let dragDirection = 0;
             let activeContent = null;
+            let isAnimating = false; // Para prevenir cambios rápidos
             
             // Detectar si es dispositivo táctil
             const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -457,11 +457,13 @@
             // Eventos táctiles
             if (isTouchDevice) {
                 mainContent.addEventListener('touchstart', e => {
+                    if (isAnimating) return;
                     touchStartX = e.changedTouches[0].screenX;
                     touchStartY = e.changedTouches[0].screenY;
                 }, false);
                 
                 mainContent.addEventListener('touchend', e => {
+                    if (isAnimating) return;
                     touchEndX = e.changedTouches[0].screenX;
                     touchEndY = e.changedTouches[0].screenY;
                     handleSwipe();
@@ -470,49 +472,47 @@
             
             // Eventos de ratón para PC
             mainContent.addEventListener('mousedown', e => {
-                if (!isTouchDevice) {
-                    isDragging = true;
-                    dragStartX = e.clientX;
-                    activeContent = dayContents[currentDayIndex];
-                    activeContent.classList.add('dragging');
-                    mainContent.classList.add('dragging');
-                    e.preventDefault();
-                }
+                if (isTouchDevice || isAnimating) return;
+                isDragging = true;
+                dragStartX = e.clientX;
+                activeContent = dayContents[currentDayIndex];
+                activeContent.classList.add('dragging');
+                mainContent.classList.add('dragging');
+                e.preventDefault();
             });
             
             document.addEventListener('mousemove', e => {
-                if (isDragging && !isTouchDevice && activeContent) {
-                    dragOffset = e.clientX - dragStartX;
-                    dragDirection = dragOffset > 0 ? 1 : -1;
-                    
-                    // Aplicar transformación visual durante el arrastre
-                    activeContent.style.transform = `translateX(${dragOffset}px)`;
-                    activeContent.style.opacity = 1 - Math.abs(dragOffset) / 300;
-                }
+                if (!isDragging || isTouchDevice || isAnimating || !activeContent) return;
+                
+                dragOffset = e.clientX - dragStartX;
+                
+                // Aplicar transformación visual durante el arrastre
+                activeContent.style.transform = `translateX(${dragOffset}px)`;
+                activeContent.style.opacity = 1 - Math.abs(dragOffset) / 300;
             });
             
             document.addEventListener('mouseup', e => {
-                if (isDragging && !isTouchDevice && activeContent) {
-                    isDragging = false;
-                    mainContent.classList.remove('dragging');
-                    
-                    // Determinar si el desplazamiento fue suficiente para cambiar de día
-                    if (Math.abs(dragOffset) > 100) {
-                        if (dragOffset > 0) {
-                            prevDay();
-                        } else {
-                            nextDay();
-                        }
+                if (!isDragging || isTouchDevice || isAnimating || !activeContent) return;
+                
+                isDragging = false;
+                mainContent.classList.remove('dragging');
+                
+                // Determinar si el desplazamiento fue suficiente para cambiar de día
+                if (Math.abs(dragOffset) > 100) {
+                    if (dragOffset > 0) {
+                        prevDay();
                     } else {
-                        // Revertir animación si no se alcanzó el umbral
-                        activeContent.style.transform = '';
-                        activeContent.style.opacity = '';
-                        activeContent.classList.remove('dragging');
+                        nextDay();
                     }
-                    
-                    dragOffset = 0;
-                    activeContent = null;
+                } else {
+                    // Revertir animación si no se alcanzó el umbral
+                    activeContent.style.transform = '';
+                    activeContent.style.opacity = '';
+                    activeContent.classList.remove('dragging');
                 }
+                
+                dragOffset = 0;
+                activeContent = null;
             });
             
             function handleSwipe() {
@@ -532,13 +532,29 @@
             }
             
             function nextDay() {
+                if (isAnimating) return;
+                isAnimating = true;
+                
                 const nextIndex = (currentDayIndex + 1) % days.length;
                 switchDay(nextIndex);
+                
+                // Resetear animación después de completar la transición
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 600); // Coincide con la duración de la transición CSS
             }
             
             function prevDay() {
+                if (isAnimating) return;
+                isAnimating = true;
+                
                 const prevIndex = (currentDayIndex - 1 + days.length) % days.length;
                 switchDay(prevIndex);
+                
+                // Resetear animación después de completar la transición
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 600); // Coincide con la duración de la transición CSS
             }
             
             function switchDay(newIndex) {
