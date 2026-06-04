@@ -123,37 +123,24 @@
 
         .main-content {
             flex: 1;
-            overflow-y: auto;
+            overflow: hidden;
             position: relative;
             padding: 15px;
-            -webkit-overflow-scrolling: touch;
+        }
+
+        .panels-container {
+            display: flex;
+            width: 700vw;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
 
         .day-content {
-            display: none;
-            opacity: 0;
-            transform: translateX(50px);
-            transition: var(--transition);
-            padding-bottom: 30px;
-        }
-
-        .day-content.active {
-            display: block;
-            opacity: 1;
-            transform: translateX(0);
-            z-index: 2;
-        }
-
-        .day-content.prev {
-            transform: translateX(-100%);
-            opacity: 0;
-            z-index: 1;
-        }
-
-        .day-content.next {
-            transform: translateX(100%);
-            opacity: 0;
-            z-index: 1;
+            width: 100vw;
+            height: 100%;
+            padding: 0 15px 30px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .meal-section {
@@ -251,108 +238,110 @@
         </header>
         
         <main class="main-content">
-            <div class="day-content active" id="lunes-content">
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
-                    <textarea class="meal-input autosize" id="lunes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+            <div class="panels-container" id="panels-container">
+                <div class="day-content" id="lunes-content">
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                        <textarea class="meal-input autosize" id="lunes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                        <textarea class="meal-input autosize" id="lunes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                        <textarea class="meal-input autosize" id="lunes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
                 </div>
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
-                    <textarea class="meal-input autosize" id="lunes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                </div>
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
-                    <textarea class="meal-input autosize" id="lunes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                </div>
-            </div>
 
-            <div class="day-content" id="martes-content">
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
-                    <textarea class="meal-input autosize" id="martes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                <div class="day-content" id="martes-content">
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                        <textarea class="meal-input autosize" id="martes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                        <textarea class="meal-input autosize" id="martes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                        <textarea class="meal-input autosize" id="martes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
                 </div>
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
-                    <textarea class="meal-input autosize" id="martes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                </div>
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
-                    <textarea class="meal-input autosize" id="martes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                </div>
-            </div>
 
-            <div class="day-content" id="miercoles-content">
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
-                    <textarea class="meal-input autosize" id="miercoles-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                <div class="day-content" id="miercoles-content">
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                        <textarea class="meal-input autosize" id="miercoles-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                        <textarea class="meal-input autosize" id="miercoles-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                        <textarea class="meal-input autosize" id="miercoles-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
                 </div>
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
-                    <textarea class="meal-input autosize" id="miercoles-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                </div>
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
-                    <textarea class="meal-input autosize" id="miercoles-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                </div>
-            </div>
 
-            <div class="day-content" id="jueves-content">
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
-                    <textarea class="meal-input autosize" id="jueves-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                <div class="day-content" id="jueves-content">
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                        <textarea class="meal-input autosize" id="jueves-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                        <textarea class="meal-input autosize" id="jueves-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                        <textarea class="meal-input autosize" id="jueves-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
                 </div>
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
-                    <textarea class="meal-input autosize" id="jueves-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                </div>
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
-                    <textarea class="meal-input autosize" id="jueves-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                </div>
-            </div>
 
-            <div class="day-content" id="viernes-content">
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
-                    <textarea class="meal-input autosize" id="viernes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                <div class="day-content" id="viernes-content">
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                        <textarea class="meal-input autosize" id="viernes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                        <textarea class="meal-input autosize" id="viernes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                        <textarea class="meal-input autosize" id="viernes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
                 </div>
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
-                    <textarea class="meal-input autosize" id="viernes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                </div>
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
-                    <textarea class="meal-input autosize" id="viernes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                </div>
-            </div>
 
-            <div class="day-content" id="sabado-content">
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
-                    <textarea class="meal-input autosize" id="sabado-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                <div class="day-content" id="sabado-content">
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                        <textarea class="meal-input autosize" id="sabado-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                        <textarea class="meal-input autosize" id="sabado-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                        <textarea class="meal-input autosize" id="sabado-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
                 </div>
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
-                    <textarea class="meal-input autosize" id="sabado-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                </div>
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
-                    <textarea class="meal-input autosize" id="sabado-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                </div>
-            </div>
 
-            <div class="day-content" id="domingo-content">
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
-                    <textarea class="meal-input autosize" id="domingo-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                </div>
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
-                    <textarea class="meal-input autosize" id="domingo-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                </div>
-                <div class="meal-section">
-                    <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
-                    <textarea class="meal-input autosize" id="domingo-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                <div class="day-content" id="domingo-content">
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                        <textarea class="meal-input autosize" id="domingo-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                        <textarea class="meal-input autosize" id="domingo-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
+                    <div class="meal-section">
+                        <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                        <textarea class="meal-input autosize" id="domingo-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                    </div>
                 </div>
             </div>
         </main>
@@ -421,10 +410,9 @@
         });
 
         function initApp() {
-            const dayContents = document.querySelectorAll('.day-content');
+            const panelsContainer = document.getElementById('panels-container');
             const textareas = document.querySelectorAll('.autosize');
             const currentDayElement = document.getElementById('currentDay');
-            const mainContent = document.querySelector('.main-content');
             
             const days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
             const dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
@@ -440,23 +428,25 @@
             
             function setupSwipe() {
                 // Eventos táctiles
-                mainContent.addEventListener('touchstart', (e) => {
+                panelsContainer.addEventListener('touchstart', (e) => {
                     startX = e.touches[0].clientX;
                     isSwiping = true;
+                    panelsContainer.style.transition = 'none';
                 });
                 
-                mainContent.addEventListener('touchmove', (e) => {
+                panelsContainer.addEventListener('touchmove', (e) => {
                     if (!isSwiping) return;
                     currentX = e.touches[0].clientX;
                     const diff = currentX - startX;
                     
                     const translateX = -currentDayIndex * 100 + (diff / window.innerWidth) * 100;
-                    mainContent.style.transform = `translateX(${translateX}vw)`;
+                    panelsContainer.style.transform = `translateX(${translateX}vw)`;
                 });
                 
-                mainContent.addEventListener('touchend', () => {
+                panelsContainer.addEventListener('touchend', () => {
                     if (!isSwiping) return;
                     isSwiping = false;
+                    panelsContainer.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)';
                     
                     const diff = currentX - startX;
                     const threshold = window.innerWidth / 4;
@@ -471,11 +461,11 @@
                 });
                 
                 // Eventos del ratón
-                mainContent.addEventListener('mousedown', (e) => {
+                panelsContainer.addEventListener('mousedown', (e) => {
                     isMouseDown = true;
                     startX = e.clientX;
                     startTransform = -currentDayIndex * 100;
-                    mainContent.style.transition = 'none';
+                    panelsContainer.style.transition = 'none';
                     e.preventDefault();
                 });
                 
@@ -485,14 +475,14 @@
                     const diff = currentX - startX;
                     
                     const translateX = startTransform + (diff / window.innerWidth) * 100;
-                    mainContent.style.transform = `translateX(${translateX}vw)`;
+                    panelsContainer.style.transform = `translateX(${translateX}vw)`;
                     e.preventDefault();
                 });
                 
                 document.addEventListener('mouseup', () => {
                     if (!isMouseDown) return;
                     isMouseDown = false;
-                    mainContent.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                    panelsContainer.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)';
                     
                     const diff = currentX - startX;
                     const threshold = window.innerWidth / 6;
@@ -507,10 +497,10 @@
                 });
                 
                 // Manejar cuando el ratón sale del área mientras arrastra
-                mainContent.addEventListener('mouseleave', () => {
+                panelsContainer.addEventListener('mouseleave', () => {
                     if (isMouseDown) {
                         isMouseDown = false;
-                        mainContent.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                        panelsContainer.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)';
                         switchDay(currentDayIndex);
                     }
                 });
@@ -519,21 +509,17 @@
             function switchDay(newIndex) {
                 if (newIndex < 0 || newIndex > 6) return;
                 
-                const direction = newIndex > currentDayIndex ? 'next' : 'prev';
-                
-                dayContents[currentDayIndex].classList.remove('active');
-                dayContents[currentDayIndex].classList.add(direction);
-                
-                dayContents[newIndex].classList.remove('prev', 'next');
-                dayContents[newIndex].classList.add('active');
-                
+                currentDayIndex = newIndex;
                 currentDayElement.textContent = dayNames[newIndex];
+                panelsContainer.style.transform = `translateX(-${newIndex * 100}vw)`;
                 
-                mainContent.scrollTop = 0;
+                // Scroll al inicio del panel
+                const activePanel = document.querySelector('.day-content:nth-child(' + (newIndex + 1) + ')');
+                if (activePanel) {
+                    activePanel.scrollTop = 0;
+                }
                 
                 setTimeout(adjustTextareaHeights, 100);
-                
-                currentDayIndex = newIndex;
             }
             
             function adjustTextareaHeights() {
