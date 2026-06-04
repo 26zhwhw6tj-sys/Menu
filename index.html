@@ -1,5 +1,3 @@
-CODIGO ORIGINAL MENU
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,6 +11,10 @@ CODIGO ORIGINAL MENU
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         :root {
@@ -196,6 +198,10 @@ CODIGO ORIGINAL MENU
             overflow: hidden;
             backdrop-filter: blur(5px);
             line-height: 1.5;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
         }
 
         .meal-input:focus {
@@ -431,6 +437,12 @@ CODIGO ORIGINAL MENU
             let touchStartY = 0;
             let touchEndY = 0;
             
+            // Variables para navegación con ratón
+            let isMouseDown = false;
+            let startX = 0;
+            let currentX = 0;
+            
+            // Eventos táctiles (mantenidos)
             mainContent.addEventListener('touchstart', e => {
                 touchStartX = e.changedTouches[0].screenX;
                 touchStartY = e.changedTouches[0].screenY;
@@ -441,6 +453,40 @@ CODIGO ORIGINAL MENU
                 touchEndY = e.changedTouches[0].screenY;
                 handleSwipe();
             }, false);
+            
+            // Eventos del ratón mejorados
+            mainContent.addEventListener('mousedown', (e) => {
+                isMouseDown = true;
+                startX = e.clientX;
+                e.preventDefault();
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isMouseDown) return;
+                currentX = e.clientX;
+                e.preventDefault();
+            });
+            
+            document.addEventListener('mouseup', () => {
+                if (!isMouseDown) return;
+                isMouseDown = false;
+                
+                const diff = currentX - startX;
+                const threshold = window.innerWidth / 6;
+                
+                if (diff > threshold) {
+                    prevDay();
+                } else if (diff < -threshold) {
+                    nextDay();
+                }
+            });
+            
+            // Manejar cuando el ratón sale del área mientras arrastra
+            mainContent.addEventListener('mouseleave', () => {
+                if (isMouseDown) {
+                    isMouseDown = false;
+                }
+            });
             
             function handleSwipe() {
                 const swipeThreshold = 50;
