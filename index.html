@@ -125,7 +125,6 @@
             flex: 1;
             overflow: hidden;
             position: relative;
-            padding: 15px;
         }
 
         .panels-container {
@@ -138,9 +137,14 @@
         .day-content {
             width: 100vw;
             height: 100%;
-            padding: 0 15px 30px;
+            padding: 15px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
+        }
+
+        .day-content-inner {
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .meal-section {
@@ -222,6 +226,10 @@
                 min-height: 90px;
                 padding: 12px;
             }
+            
+            .day-content {
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -239,108 +247,122 @@
         
         <main class="main-content">
             <div class="panels-container" id="panels-container">
-                <div class="day-content" id="lunes-content">
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
-                        <textarea class="meal-input autosize" id="lunes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
-                        <textarea class="meal-input autosize" id="lunes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
-                        <textarea class="meal-input autosize" id="lunes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                </div>
-
-                <div class="day-content" id="martes-content">
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
-                        <textarea class="meal-input autosize" id="martes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
-                        <textarea class="meal-input autosize" id="martes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
-                        <textarea class="meal-input autosize" id="martes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                <div class="day-content">
+                    <div class="day-content-inner" id="lunes-content">
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                            <textarea class="meal-input autosize" id="lunes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                            <textarea class="meal-input autosize" id="lunes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                            <textarea class="meal-input autosize" id="lunes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
                     </div>
                 </div>
 
-                <div class="day-content" id="miercoles-content">
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
-                        <textarea class="meal-input autosize" id="miercoles-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
-                        <textarea class="meal-input autosize" id="miercoles-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
-                        <textarea class="meal-input autosize" id="miercoles-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                </div>
-
-                <div class="day-content" id="jueves-content">
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
-                        <textarea class="meal-input autosize" id="jueves-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
-                        <textarea class="meal-input autosize" id="jueves-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
-                        <textarea class="meal-input autosize" id="jueves-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                <div class="day-content">
+                    <div class="day-content-inner" id="martes-content">
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                            <textarea class="meal-input autosize" id="martes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                            <textarea class="meal-input autosize" id="martes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                            <textarea class="meal-input autosize" id="martes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
                     </div>
                 </div>
 
-                <div class="day-content" id="viernes-content">
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
-                        <textarea class="meal-input autosize" id="viernes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
-                        <textarea class="meal-input autosize" id="viernes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
-                        <textarea class="meal-input autosize" id="viernes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                </div>
-
-                <div class="day-content" id="sabado-content">
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
-                        <textarea class="meal-input autosize" id="sabado-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
-                        <textarea class="meal-input autosize" id="sabado-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
-                    </div>
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
-                        <textarea class="meal-input autosize" id="sabado-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                <div class="day-content">
+                    <div class="day-content-inner" id="miercoles-content">
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                            <textarea class="meal-input autosize" id="miercoles-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                            <textarea class="meal-input autosize" id="miercoles-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                            <textarea class="meal-input autosize" id="miercoles-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
                     </div>
                 </div>
 
-                <div class="day-content" id="domingo-content">
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
-                        <textarea class="meal-input autosize" id="domingo-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                <div class="day-content">
+                    <div class="day-content-inner" id="jueves-content">
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                            <textarea class="meal-input autosize" id="jueves-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                            <textarea class="meal-input autosize" id="jueves-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                            <textarea class="meal-input autosize" id="jueves-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
                     </div>
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
-                        <textarea class="meal-input autosize" id="domingo-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+
+                <div class="day-content">
+                    <div class="day-content-inner" id="viernes-content">
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                            <textarea class="meal-input autosize" id="viernes-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                            <textarea class="meal-input autosize" id="viernes-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                            <textarea class="meal-input autosize" id="viernes-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
                     </div>
-                    <div class="meal-section">
-                        <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
-                        <textarea class="meal-input autosize" id="domingo-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                </div>
+
+                <div class="day-content">
+                    <div class="day-content-inner" id="sabado-content">
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                            <textarea class="meal-input autosize" id="sabado-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                            <textarea class="meal-input autosize" id="sabado-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                            <textarea class="meal-input autosize" id="sabado-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-content">
+                    <div class="day-content-inner" id="domingo-content">
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-sun"></i> Desayuno</h3>
+                            <textarea class="meal-input autosize" id="domingo-desayuno" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-cloud-sun"></i> Almuerzo</h3>
+                            <textarea class="meal-input autosize" id="domingo-almuerzo" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
+                        <div class="meal-section">
+                            <h3 class="meal-title"><i class="fas fa-moon"></i> Cena</h3>
+                            <textarea class="meal-input autosize" id="domingo-cena" placeholder="Escribe aquí lo que tengas pensado..."></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -357,52 +379,67 @@
             let stallPoints = [];
             let speeds = [];
             
+            // Crear velocidades para una duración total de aproximadamente 1.5 segundos
             for(let i = 0; i < 360; i++) {
-                speeds.push(Math.random() * 10 + 1);
+                speeds.push(Math.random() * 8 + 2);
             }
             
-            const stallCount = Math.floor(Math.random() * 5) + 3;
+            // Puntos de estancamiento para dar la sensación de carga real
+            const stallCount = Math.floor(Math.random() * 4) + 2;
             for(let i = 0; i < stallCount; i++) {
                 stallPoints.push(Math.random() * 90);
             }
             
             let speedIndex = 0;
+            let startTime = null;
+            const targetDuration = 1500; // 1.5 segundos
             
-            function updateProgress() {
+            function updateProgress(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                
+                // Calcular progreso basado en el tiempo transcurrido
+                const timeProgress = Math.min(100, (elapsed / targetDuration) * 100);
+                
+                // Verificar si hay puntos de estancamiento
                 let isStalling = false;
                 for(let i = 0; i < stallPoints.length; i++) {
                     if (stallPoints[i] > 0 && Math.abs(progress - stallPoints[i]) < 1) {
                         stallPoints[i] = -stallPoints[i];
                         isStalling = true;
-                        const stallDuration = Math.random() * 800 + 200;
+                        const stallDuration = Math.random() * 400 + 100;
                         
                         setTimeout(() => {
-                            updateProgress();
+                            requestAnimationFrame(updateProgress);
                         }, stallDuration);
                         
                         return;
                     }
                 }
                 
-                const currentSpeed = speeds[speedIndex] || (Math.random() * 3 + 0.5);
+                // Usar la velocidad actual o una aleatoria
+                const currentSpeed = speeds[speedIndex] || (Math.random() * 2 + 0.5);
                 speedIndex = (speedIndex + 1) % speeds.length;
                 
-                progress += currentSpeed * 0.3;
+                // Actualizar progreso
+                progress = Math.min(100, progress + currentSpeed * 0.2);
+                
+                // Asegurar que llegue al 100% al final del tiempo objetivo
+                if (elapsed >= targetDuration) {
+                    progress = 100;
+                }
+                
+                loadingProgress.style.width = `${progress}%`;
                 
                 if (progress >= 100) {
-                    progress = 100;
-                    loadingProgress.style.width = '100%';
-                    
                     setTimeout(() => {
                         launcher.classList.add('hidden');
                         appContainer.classList.add('visible');
                         initApp();
                     }, 300);
-                    
                     return;
                 }
                 
-                loadingProgress.style.width = `${progress}%`;
                 requestAnimationFrame(updateProgress);
             }
             
