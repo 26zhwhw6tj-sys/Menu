@@ -11,10 +11,6 @@
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
 
         :root {
@@ -39,6 +35,10 @@
             padding: 0;
             overflow: hidden;
             color: var(--dark);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         @keyframes gradientAnimation {
@@ -432,89 +432,93 @@
             
             loadMenu();
             
-            let touchStartX = 0;
-            let touchEndX = 0;
-            let touchStartY = 0;
-            let touchEndY = 0;
-            
-            // Variables para navegación con ratón
-            let isMouseDown = false;
             let startX = 0;
             let currentX = 0;
+            let isSwiping = false;
+            let isMouseDown = false;
+            let startTransform = 0;
             
-            // Eventos táctiles (mantenidos)
-            mainContent.addEventListener('touchstart', e => {
-                touchStartX = e.changedTouches[0].screenX;
-                touchStartY = e.changedTouches[0].screenY;
-            }, false);
-            
-            mainContent.addEventListener('touchend', e => {
-                touchEndX = e.changedTouches[0].screenX;
-                touchEndY = e.changedTouches[0].screenY;
-                handleSwipe();
-            }, false);
-            
-            // Eventos del ratón mejorados
-            mainContent.addEventListener('mousedown', (e) => {
-                isMouseDown = true;
-                startX = e.clientX;
-                e.preventDefault();
-            });
-            
-            document.addEventListener('mousemove', (e) => {
-                if (!isMouseDown) return;
-                currentX = e.clientX;
-                e.preventDefault();
-            });
-            
-            document.addEventListener('mouseup', () => {
-                if (!isMouseDown) return;
-                isMouseDown = false;
+            function setupSwipe() {
+                // Eventos táctiles
+                mainContent.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    isSwiping = true;
+                });
                 
-                const diff = currentX - startX;
-                const threshold = window.innerWidth / 6;
+                mainContent.addEventListener('touchmove', (e) => {
+                    if (!isSwiping) return;
+                    currentX = e.touches[0].clientX;
+                    const diff = currentX - startX;
+                    
+                    const translateX = -currentDayIndex * 100 + (diff / window.innerWidth) * 100;
+                    mainContent.style.transform = `translateX(${translateX}vw)`;
+                });
                 
-                if (diff > threshold) {
-                    prevDay();
-                } else if (diff < -threshold) {
-                    nextDay();
-                }
-            });
-            
-            // Manejar cuando el ratón sale del área mientras arrastra
-            mainContent.addEventListener('mouseleave', () => {
-                if (isMouseDown) {
-                    isMouseDown = false;
-                }
-            });
-            
-            function handleSwipe() {
-                const swipeThreshold = 50;
-                const verticalThreshold = 30;
-                
-                const horizontalDistance = Math.abs(touchStartX - touchEndX);
-                const verticalDistance = Math.abs(touchStartY - touchEndY);
-                
-                if (horizontalDistance > verticalDistance && horizontalDistance > swipeThreshold) {
-                    if (touchStartX - touchEndX > swipeThreshold) {
-                        nextDay();
-                    } else if (touchEndX - touchStartX > swipeThreshold) {
-                        prevDay();
+                mainContent.addEventListener('touchend', () => {
+                    if (!isSwiping) return;
+                    isSwiping = false;
+                    
+                    const diff = currentX - startX;
+                    const threshold = window.innerWidth / 4;
+                    
+                    if (diff > threshold && currentDayIndex > 0) {
+                        switchDay(currentDayIndex - 1);
+                    } else if (diff < -threshold && currentDayIndex < 6) {
+                        switchDay(currentDayIndex + 1);
+                    } else {
+                        switchDay(currentDayIndex);
                     }
-                }
-            }
-            
-            function nextDay() {
-                const nextIndex = (currentDayIndex + 1) % days.length;
-                switchDay(nextIndex);
-            }
-            
-            function prevDay() {
-                const prevIndex = (currentDayIndex - 1 + days.length) % days.length;
-                switchDay(prevIndex);
+                });
+                
+                // Eventos del ratón
+                mainContent.addEventListener('mousedown', (e) => {
+                    isMouseDown = true;
+                    startX = e.clientX;
+                    startTransform = -currentDayIndex * 100;
+                    mainContent.style.transition = 'none';
+                    e.preventDefault();
+                });
+                
+                document.addEventListener('mousemove', (e) => {
+                    if (!isMouseDown) return;
+                    currentX = e.clientX;
+                    const diff = currentX - startX;
+                    
+                    const translateX = startTransform + (diff / window.innerWidth) * 100;
+                    mainContent.style.transform = `translateX(${translateX}vw)`;
+                    e.preventDefault();
+                });
+                
+                document.addEventListener('mouseup', () => {
+                    if (!isMouseDown) return;
+                    isMouseDown = false;
+                    mainContent.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                    
+                    const diff = currentX - startX;
+                    const threshold = window.innerWidth / 6;
+                    
+                    if (diff > threshold && currentDayIndex > 0) {
+                        switchDay(currentDayIndex - 1);
+                    } else if (diff < -threshold && currentDayIndex < 6) {
+                        switchDay(currentDayIndex + 1);
+                    } else {
+                        switchDay(currentDayIndex);
+                    }
+                });
+                
+                // Manejar cuando el ratón sale del área mientras arrastra
+                mainContent.addEventListener('mouseleave', () => {
+                    if (isMouseDown) {
+                        isMouseDown = false;
+                        mainContent.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                        switchDay(currentDayIndex);
+                    }
+                });
             }
             
             function switchDay(newIndex) {
+                if (newIndex < 0 || newIndex > 6) return;
+                
                 const direction = newIndex > currentDayIndex ? 'next' : 'prev';
                 
                 dayContents[currentDayIndex].classList.remove('active');
@@ -579,6 +583,8 @@
                 textarea.style.height = 'auto';
                 textarea.style.height = (textarea.scrollHeight) + 'px';
             });
+            
+            setupSwipe();
         }
     </script>
 </body>
