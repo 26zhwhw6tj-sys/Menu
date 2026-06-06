@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Menú Semanal + IA Avanzada</title>
+    <title>Menú Semanal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -22,7 +22,6 @@
             --success: #4caf50;
             --warning: #ff9800;
             --danger: #f44336;
-            --info: #2196f3;
             --gray: #6c757d;
             --border: rgba(255, 255, 255, 0.2);
             --transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -124,7 +123,6 @@
             position: relative;
             padding: 15px;
             -webkit-overflow-scrolling: touch;
-            margin-bottom: 220px; /* Espacio para el contenedor de IA avanzada */
         }
 
         .day-content {
@@ -205,204 +203,6 @@
             background: rgba(255, 255, 255, 0.95);
         }
 
-        /* Contenedor de IA avanzada */
-        .ai-advanced-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-            padding: 15px;
-            z-index: 100;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
-            max-height: 250px;
-            overflow-y: auto;
-        }
-
-        .ai-advanced-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .ai-advanced-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #000000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .ai-advanced-controls {
-            display: flex;
-            gap: 8px;
-        }
-
-        .ai-advanced-btn {
-            background: #4cc9f0;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 25px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .ai-advanced-btn:hover {
-            background: #3bb8e0;
-            transform: scale(1.05);
-        }
-
-        .ai-advanced-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .ai-advanced-content {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: #333;
-        }
-
-        .ai-advanced-loading {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.95rem;
-            color: #666;
-            padding: 10px;
-        }
-
-        .ai-advanced-consejo {
-            background: rgba(76, 201, 240, 0.1);
-            border-left: 4px solid #4cc9f0;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 8px 0;
-            font-size: 0.9rem;
-        }
-
-        .ai-advanced-warning {
-            background: rgba(255, 152, 0, 0.1);
-            border-left: 4px solid #ff9800;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 8px 0;
-            font-size: 0.9rem;
-        }
-
-        .ai-advanced-danger {
-            background: rgba(244, 67, 54, 0.1);
-            border-left: 4px solid #f44336;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 8px 0;
-            font-size: 0.9rem;
-        }
-
-        .ai-advanced-success {
-            background: rgba(76, 175, 80, 0.1);
-            border-left: 4px solid #4caf50;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 8px 0;
-            font-size: 0.9rem;
-        }
-
-        .ai-advanced-info {
-            background: rgba(33, 150, 243, 0.1);
-            border-left: 4px solid #2196f3;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 8px 0;
-            font-size: 0.9rem;
-        }
-
-        .ai-advanced-stats {
-            display: flex;
-            gap: 15px;
-            margin: 10px 0;
-            font-size: 0.85rem;
-        }
-
-        .ai-advanced-stat {
-            text-align: center;
-            padding: 8px;
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 8px;
-            flex: 1;
-        }
-
-        .ai-advanced-stat-value {
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: #4cc9f0;
-        }
-
-        .ai-advanced-ordenado {
-            background: rgba(76, 201, 240, 0.05);
-            border: 1px dashed #4cc9f0;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-        }
-
-        .ai-advanced-ordenado-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #000000;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .ai-advanced-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .ai-advanced-item:last-child {
-            border-bottom: none;
-        }
-
-        .ai-advanced-item-icon {
-            font-size: 1.2rem;
-        }
-
-        .ai-advanced-item-text {
-            flex: 1;
-        }
-
-        .ai-advanced-correction {
-            background: rgba(255, 235, 59, 0.2);
-            padding: 2px 6px;
-            border-radius: 4px;
-            text-decoration: line-through;
-            font-size: 0.85rem;
-        }
-
-        .ai-advanced-correction-suggestion {
-            background: rgba(76, 175, 80, 0.2);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            margin-left: 5px;
-        }
-
         @keyframes slideInUp {
             from {
                 opacity: 0;
@@ -426,19 +226,6 @@
             .meal-input {
                 min-height: 90px;
                 padding: 12px;
-            }
-            
-            .ai-advanced-container {
-                padding: 12px;
-            }
-            
-            .ai-advanced-title {
-                font-size: 1.1rem;
-            }
-            
-            .ai-advanced-btn {
-                padding: 6px 12px;
-                font-size: 0.75rem;
             }
         }
     </style>
@@ -561,30 +348,6 @@
                 </div>
             </div>
         </main>
-
-        <!-- Contenedor de IA avanzada -->
-        <div class="ai-advanced-container">
-            <div class="ai-advanced-header">
-                <div class="ai-advanced-title">
-                    <i class="fas fa-robot"></i>
-                    Asistente IA Profesional
-                </div>
-                <div class="ai-advanced-controls">
-                    <button class="ai-advanced-btn" id="ai-refresh">
-                        <i class="fas fa-sync"></i> Actualizar
-                    </button>
-                    <button class="ai-advanced-btn" id="ai-next-consejo">
-                        <i class="fas fa-forward"></i> Siguiente
-                    </button>
-                </div>
-            </div>
-            <div class="ai-advanced-content" id="ai-content">
-                <div class="ai-advanced-loading">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    Inicializando IA avanzada...
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -654,18 +417,12 @@
             const textareas = document.querySelectorAll('.autosize');
             const currentDayElement = document.getElementById('currentDay');
             const mainContent = document.querySelector('.main-content');
-            const aiContent = document.getElementById('ai-content');
-            const aiRefresh = document.getElementById('ai-refresh');
-            const aiNextConsejo = document.getElementById('ai-next-consejo');
             
             const days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
             const dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
             let currentDayIndex = 0;
-            let consejoIndex = 0;
             
-            // Cargar datos y mostrar IA inicial
             loadMenu();
-            setTimeout(updateAIContent, 1000);
             
             let touchStartX = 0;
             let touchEndX = 0;
@@ -744,9 +501,6 @@
                     };
                 });
                 localStorage.setItem('menuSemanal', JSON.stringify(menu));
-                
-                // Actualizar IA después de guardar
-                setTimeout(updateAIContent, 500);
             }
             
             function loadMenu() {
@@ -765,307 +519,6 @@
                 }
             }
             
-            // Función avanzada para actualizar el contenido de la IA
-            async function updateAIContent() {
-                try {
-                    aiRefresh.disabled = true;
-                    aiNextConsejo.disabled = true;
-                    
-                    // Cargar datos del menú
-                    const menuData = JSON.parse(localStorage.getItem('menuSemanal') || '{}');
-                    let allText = '';
-                    let meals = [];
-                    
-                    // Recopilar todo el texto del menú y estructurar comidas
-                    Object.entries(menuData).forEach(([day, mealsData]) => {
-                        Object.entries(mealsData).forEach(([mealType, content]) => {
-                            if (content) {
-                                allText += content + ' ';
-                                meals.push({
-                                    day: day,
-                                    type: mealType,
-                                    content: content
-                                });
-                            }
-                        });
-                    });
-                    
-                    if (!allText.trim()) {
-                        aiContent.innerHTML = `
-                            <div class="ai-advanced-info">
-                                <i class="fas fa-info-circle"></i> 
-                                Guarda tus menús y la IA te dará consejos profesionales personalizados...
-                            </div>
-                        `;
-                        return;
-                    }
-                    
-                    // Generar análisis avanzado
-                    const analisis = await generarAnalisisAvanzado(allText, meals);
-                    mostrarAnalisis(analisis);
-                    
-                } catch (error) {
-                    console.error('Error en IA:', error);
-                    aiContent.innerHTML = `
-                        <div class="ai-advanced-danger">
-                            <i class="fas fa-exclamation-triangle"></i> 
-                            Error al generar análisis. Completa más información en tus menús.
-                        </div>
-                    `;
-                } finally {
-                    aiRefresh.disabled = false;
-                    aiNextConsejo.disabled = false;
-                }
-            }
-            
-            // Función para generar análisis avanzado
-            function generarAnalisisAvanzado(texto, meals) {
-                const palabras = texto.toLowerCase().split(/\s+/);
-                const conteoPalabras = {};
-                
-                // Contar palabras importantes
-                palabras.forEach(palabra => {
-                    if (palabra.length > 3) {
-                        conteoPalabras[palabra] = (conteoPalabras[palabra] || 0) + 1;
-                    }
-                });
-                
-                // Ordenar por frecuencia
-                const palabrasFrecuentes = Object.entries(conteoPalabras)
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, 10)
-                    .map(([palabra]) => palabra);
-                
-                // Análisis de nutrientes
-                const nutrientes = {
-                    verduras: palabrasFrecuentes.filter(p => 
-                        ['verdura', 'verduras', 'ensalada', 'lechuga', 'tomate', 'pepino', 'zanahoria', 'espinaca'].includes(p)
-                    ).length,
-                    frutas: palabrasFrecuentes.filter(p => 
-                        ['fruta', 'frutas', 'manzana', 'plátano', 'naranja', 'uva', 'fresa'].includes(p)
-                    ).length,
-                    proteinas: palabrasFrecuentes.filter(p => 
-                        ['carne', 'pollo', 'pescado', 'huevo', 'huevos', 'tofu', 'lentejas', 'frijoles'].includes(p)
-                    ).length,
-                    carbohidratos: palabrasFrecuentes.filter(p => 
-                        ['arroz', 'pasta', 'pan', 'patata', 'patatas', 'maíz'].includes(p)
-                    ).length
-                };
-                
-                // Análisis de hábitos
-                const habitos = {
-                    equilibrado: nutrientes.verduras > 2 && nutrientes.frutas > 1 && nutrientes.proteinas > 1,
-                    altoCalorias: palabrasFrecuentes.some(p => 
-                        ['frito', 'fritas', 'pizza', 'hamburguesa', 'dulce', 'azúcar', 'chocolate'].includes(p)
-                    ),
-                    bajoVerduras: nutrientes.verduras < 2,
-                    repetitivo: palabrasFrecuentes.some((p, i) => 
-                        i < palabrasFrecuentes.length - 2 && 
-                        p === palabrasFrecuentes[i+1] && 
-                        p === palabrasFrecuentes[i+2]
-                    )
-                };
-                
-                // Corrección ortográfica básica (simulada)
-                const correcciones = [];
-                meals.forEach(meal => {
-                    // Simular correcciones ortográficas comunes
-                    const contenido = meal.content;
-                    if (contenido.includes('tomate') && contenido.includes('ensalda')) {
-                        correcciones.push({
-                            original: 'ensalda',
-                            corregido: 'ensalada',
-                            contexto: `En ${meal.day} ${meal.type}`
-                        });
-                    }
-                });
-                
-                // Organización visual de comidas
-                const comidasOrganizadas = meals.map(meal => {
-                    const items = meal.content.split(/[,.]/).filter(item => item.trim());
-                    return {
-                        dia: meal.day,
-                        tipo: meal.type,
-                        items: items.map(item => item.trim())
-                    };
-                });
-                
-                return {
-                    nutrientes,
-                    habitos,
-                    correcciones,
-                    comidasOrganizadas,
-                    palabrasFrecuentes
-                };
-            }
-            
-            // Función para mostrar el análisis
-            function mostrarAnalisis(analisis) {
-                const consejos = [];
-                
-                // Consejos basados en nutrientes
-                if (analisis.nutrientes.verduras < 3) {
-                    consejos.push({
-                        tipo: 'warning',
-                        mensaje: '🥗 Te recomiendo incluir más verduras en tus comidas. Prueba con espinacas, brócoli o zanahorias.'
-                    });
-                } else {
-                    consejos.push({
-                        tipo: 'success',
-                        mensaje: '✅ ¡Excelente! Incluyes suficientes vegetales en tu dieta.'
-                    });
-                }
-                
-                if (analisis.nutrientes.frutas < 2) {
-                    consejos.push({
-                        tipo: 'warning',
-                        mensaje: '🍎 Considera añadir frutas frescas a tu menú. Las frutas son una gran fuente de vitaminas.'
-                    });
-                } else {
-                    consejos.push({
-                        tipo: 'success',
-                        mensaje: '✅ ¡Perfecto! Las frutas son una gran fuente de vitaminas.'
-                    });
-                }
-                
-                if (analisis.nutrientes.proteinas < 2) {
-                    consejos.push({
-                        tipo: 'warning',
-                        mensaje: '🥩 Te sugerimos agregar fuentes de proteína como carnes magras, pescado o legumbres.'
-                    });
-                } else {
-                    consejos.push({
-                        tipo: 'success',
-                        mensaje: '✅ Bien por incluir proteínas en tu dieta.'
-                    });
-                }
-                
-                // Alertas de hábitos
-                if (analisis.habitos.altoCalorias) {
-                    consejos.push({
-                        tipo: 'danger',
-                        mensaje: '⚠️ Cuidado con las comidas altas en calorías. Considera opciones más saludables como asados o al vapor.'
-                    });
-                }
-                
-                if (analisis.habitos.repetitivo) {
-                    consejos.push({
-                        tipo: 'info',
-                        mensaje: '🔄 Tu menú parece repetitivo. Prueba con nuevas recetas para una dieta más variada.'
-                    });
-                }
-                
-                // Mostrar correcciones ortográficas
-                if (analisis.correcciones.length > 0) {
-                    consejos.push({
-                        tipo: 'info',
-                        mensaje: `✍️ Correcciones ortográficas encontradas: ${analisis.correcciones.length}`
-                    });
-                }
-                
-                // Mostrar consejo actual
-                const consejoActual = consejos[consejoIndex % consejos.length];
-                
-                let html = '';
-                
-                // Estadísticas
-                html += `
-                    <div class="ai-advanced-stats">
-                        <div class="ai-advanced-stat">
-                            <div class="ai-advanced-stat-value">${analisis.nutrientes.verduras}</div>
-                            <div>Verduras</div>
-                        </div>
-                        <div class="ai-advanced-stat">
-                            <div class="ai-advanced-stat-value">${analisis.nutrientes.frutas}</div>
-                            <div>Frutas</div>
-                        </div>
-                        <div class="ai-advanced-stat">
-                            <div class="ai-advanced-stat-value">${analisis.nutrientes.proteinas}</div>
-                            <div>Proteínas</div>
-                        </div>
-                        <div class="ai-advanced-stat">
-                            <div class="ai-advanced-stat-value">${analisis.correcciones.length}</div>
-                            <div>Correcciones</div>
-                        </div>
-                    </div>
-                `;
-                
-                // Consejo actual
-                const claseConsejo = `ai-advanced-${consejoActual.tipo}`;
-                html += `<div class="${claseConsejo}">${consejoActual.mensaje}</div>`;
-                
-                // Correcciones ortográficas
-                if (analisis.correcciones.length > 0) {
-                    html += `
-                        <div class="ai-advanced-ordenado">
-                            <div class="ai-advanced-ordenado-title">
-                                <i class="fas fa-spell-check"></i>
-                                Correcciones Ortográficas
-                            </div>
-                    `;
-                    analisis.correcciones.forEach(correccion => {
-                        html += `
-                            <div class="ai-advanced-item">
-                                <div class="ai-advanced-item-icon">✍️</div>
-                                <div class="ai-advanced-item-text">
-                                    <span class="ai-advanced-correction">${correccion.original}</span>
-                                    <span class="ai-advanced-correction-suggestion">${correccion.corregido}</span>
-                                    <br><small>${correccion.contexto}</small>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    html += `</div>`;
-                }
-                
-                // Organización visual
-                html += `
-                    <div class="ai-advanced-ordenado">
-                        <div class="ai-advanced-ordenado-title">
-                            <i class="fas fa-list"></i>
-                            Menú Organizado Visualmente
-                        </div>
-                `;
-                
-                analisis.comidasOrganizadas.forEach(comida => {
-                    html += `
-                        <div class="ai-advanced-item">
-                            <div class="ai-advanced-item-icon">📅</div>
-                            <div class="ai-advanced-item-text">
-                                <strong>${comida.dia.charAt(0).toUpperCase() + comida.dia.slice(1)} - ${comida.tipo}</strong>
-                                <div style="margin-top: 5px;">
-                    `;
-                    
-                    comida.items.forEach((item, index) => {
-                        html += `
-                            <div style="display: flex; align-items: center; margin: 3px 0;">
-                                <span style="margin-right: 8px;">→</span>
-                                <span>${item}</span>
-                            </div>
-                        `;
-                    });
-                    
-                    html += `
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                html += `</div>`;
-                
-                aiContent.innerHTML = html;
-            }
-            
-            // Eventos para los botones
-            aiRefresh.addEventListener('click', updateAIContent);
-            
-            aiNextConsejo.addEventListener('click', () => {
-                consejoIndex++;
-                updateAIContent();
-            });
-            
-            // Corrección ortográfica en tiempo real (simulada)
             textareas.forEach(textarea => {
                 textarea.addEventListener('input', function() {
                     this.style.height = 'auto';
