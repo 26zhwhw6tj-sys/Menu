@@ -123,6 +123,7 @@
             position: relative;
             padding: 15px;
             -webkit-overflow-scrolling: touch;
+            margin-bottom: 180px; /* Espacio para el contenedor de IA */
         }
 
         .day-content {
@@ -203,6 +204,75 @@
             background: rgba(255, 255, 255, 0.95);
         }
 
+        /* Contenedor de IA fijo en la parte inferior */
+        .ai-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            z-index: 100;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .ai-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .ai-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #000000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-content {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: #333;
+        }
+
+        .ai-loading {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .ai-refresh {
+            background: #4cc9f0;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ai-refresh:hover {
+            background: #3bb8e0;
+            transform: scale(1.05);
+        }
+
+        .ai-refresh:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
         @keyframes slideInUp {
             from {
                 opacity: 0;
@@ -226,6 +296,14 @@
             .meal-input {
                 min-height: 90px;
                 padding: 12px;
+            }
+            
+            .ai-container {
+                padding: 12px;
+            }
+            
+            .ai-title {
+                font-size: 1rem;
             }
         }
     </style>
@@ -348,13 +426,34 @@
                 </div>
             </div>
         </main>
+
+        <!-- Contenedor de IA -->
+        <div class="ai-container">
+            <div class="ai-header">
+                <div class="ai-title">
+                    <i class="fas fa-robot"></i>
+                    Asistente IA
+                </div>
+                <button class="ai-refresh" id="ai-refresh">
+                    <i class="fas fa-sync"></i> Actualizar
+                </button>
+            </div>
+            <div class="ai-content" id="ai-content">
+                Guarda tus menús y la IA te dará consejos personalizados...
+            </div>
+        </div>
     </div>
 
+    <!-- Cargar Transformers.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers@latest"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const launcher = document.getElementById('launcher');
             const loadingProgress = document.getElementById('loading-progress');
             const appContainer = document.getElementById('app-container');
+            const aiContent = document.getElementById('ai-content');
+            const aiRefresh = document.getElementById('ai-refresh');
             
             let progress = 0;
             let stallPoints = [];
@@ -417,12 +516,15 @@
             const textareas = document.querySelectorAll('.autosize');
             const currentDayElement = document.getElementById('currentDay');
             const mainContent = document.querySelector('.main-content');
+            const aiContent = document.getElementById('ai-content');
+            const aiRefresh = document.getElementById('ai-refresh');
             
             const days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
             const dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
             let currentDayIndex = 0;
             
             loadMenu();
+            updateAIContent(); // Actualizar IA al iniciar
             
             let touchStartX = 0;
             let touchEndX = 0;
@@ -501,6 +603,9 @@
                     };
                 });
                 localStorage.setItem('menuSemanal', JSON.stringify(menu));
+                
+                // Actualizar IA después de guardar
+                setTimeout(updateAIContent, 500);
             }
             
             function loadMenu() {
@@ -518,6 +623,94 @@
                     setTimeout(adjustTextareaHeights, 100);
                 }
             }
+            
+            // Función para actualizar el contenido de la IA
+            async function updateAIContent() {
+                try {
+                    aiContent.innerHTML = '<div class="ai-loading"><i class="fas fa-spinner fa-spin"></i> Analizando tus menús...</div>';
+                    aiRefresh.disabled = true;
+                    
+                    // Cargar datos del menú
+                    const menuData = JSON.parse(localStorage.getItem('menuSemanal') || '{}');
+                    let allText = '';
+                    
+                    // Recopilar todo el texto del menú
+                    Object.values(menuData).forEach(day => {
+                        Object.values(day).forEach(meal => {
+                            if (meal) allText += meal + ' ';
+                        });
+                    });
+                    
+                    if (!allText.trim()) {
+                        aiContent.innerHTML = 'Guarda tus menús y la IA te dará consejos personalizados...';
+                        aiRefresh.disabled = false;
+                        return;
+                    }
+                    
+                    // Generar consejos basados en el texto (simulación simple)
+                    const consejos = generarConsejos(allText);
+                    aiContent.innerHTML = consejos;
+                    
+                } catch (error) {
+                    console.error('Error en IA:', error);
+                    aiContent.innerHTML = 'Error al generar consejos. Guarda más información en tus menús.';
+                } finally {
+                    aiRefresh.disabled = false;
+                }
+            }
+            
+            // Función para generar consejos simples basados en el texto
+            function generarConsejos(texto) {
+                const palabras = texto.toLowerCase().split(/\s+/);
+                const conteoPalabras = {};
+                
+                // Contar palabras importantes
+                palabras.forEach(palabra => {
+                    if (palabra.length > 3) {
+                        conteoPalabras[palabra] = (conteoPalabras[palabra] || 0) + 1;
+                    }
+                });
+                
+                // Ordenar por frecuencia
+                const palabrasFrecuentes = Object.entries(conteoPalabras)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5)
+                    .map(([palabra]) => palabra);
+                
+                // Generar consejos basados en las palabras
+                let consejo = '<strong>🌟 Consejos para tu menú:</strong><br>';
+                
+                if (palabrasFrecuentes.includes('verduras') || palabrasFrecuentes.includes('ensalada')) {
+                    consejo += '✅ ¡Excelente! Incluyes vegetales en tu dieta.<br>';
+                } else {
+                    consejo += '🥗 Te recomiendo incluir más verduras en tus comidas.<br>';
+                }
+                
+                if (palabrasFrecuentes.includes('fruta') || palabrasFrecuentes.includes('frutas')) {
+                    consejo += '✅ ¡Perfecto! Las frutas son una gran fuente de vitaminas.<br>';
+                } else {
+                    consejo += '🍎 Considera añadir frutas frescas a tu menú.<br>';
+                }
+                
+                if (palabrasFrecuentes.some(p => ['carne', 'pollo', 'pescado', 'huevo'].includes(p))) {
+                    consejo += '✅ Bien por incluir proteínas en tu dieta.<br>';
+                } else {
+                    consejo += '🥩 Te sugerimos agregar fuentes de proteína como carnes magras.<br>';
+                }
+                
+                // Consejo general
+                consejo += '<br><strong>💡 Consejo general:</strong> ';
+                if (texto.length < 100) {
+                    consejo += 'Completa más detalles en tus menús para recibir mejores recomendaciones.';
+                } else {
+                    consejo += 'Tu menú se ve equilibrado. ¡Sigue así!';
+                }
+                
+                return consejo;
+            }
+            
+            // Evento para el botón de actualizar IA
+            aiRefresh.addEventListener('click', updateAIContent);
             
             textareas.forEach(textarea => {
                 textarea.addEventListener('input', function() {
